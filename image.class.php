@@ -87,20 +87,39 @@ class Image
 
     /**
      * 在浏览器中显示最终的图片
+     * @param int $jpg_quality jpg图片质量，0-100（100最佳，默认75）
+     * @param int $png_quality png图片质量，0-9（0最佳，默认为2）
      */
-    public function show() {
+    public function show($jpg_quality = 75, $png_quality = 2) {
         header('Content-type:'.$this->info['mime']);
         $funs = "image{$this->info['type']}"; // imagejpeg，imagepng...
-        $funs($this->image);
+
+        if ($this->info['type'] == 'jpeg') {
+            $funs($this->image, null, $jpg_quality);
+        } elseif ($this->info['type'] == 'png') {
+            $funs($this->image, null, $png_quality);
+        } else {
+            $funs($this->image);
+        }
     }
 
     /**
      * 存储最终的图片
      * @param string $name 存储的图片名
+     * @param int $jpg_quality jpg图片质量，0-100（100最佳，默认75）
+     * @param int $png_quality png图片质量，0-9（0最佳，默认为2）
      */
-    public function save($name) {
+    public function save($name, $jpg_quality = 75, $png_quality = 2) {
         $funs = "image{$this->info['type']}";
-        $funs($this->image, $name.'.'.$this->info['type']);
+        $this->info['type'] = $this->info['type'] == 'jpeg' ? 'jpg' : $this->info['type']; // jpg图片后缀统一为.jpg
+
+        if ($this->info['type'] == 'jpg') {
+            $funs($this->image, $name.'.'.$this->info['type'], $jpg_quality);
+        } elseif ($this->info['type'] == 'png') {
+            $funs($this->image, $name.'.'.$this->info['type'], $png_quality);
+        } else {
+            $funs($this->image, $name.'.'.$this->info['type']);
+        }
     }
 
     /**

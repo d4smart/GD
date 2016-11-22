@@ -14,8 +14,8 @@ require "image.class.php";
 $image = new Image('bg3.jpg');
 $image->imageMark('waterImage.jpg', array(0, 0), 60);
 $image->fontMark("这是醉吼的", 20, array(360, 450), array(0, 0, 0), 60);
-$image->show();
-//$image->save('output1');
+$image->show();     // 在浏览器中显示图片
+$image->save('output1');    // 保存图片
 
 // 生成图片的缩略图
 //$image = new Image('qrcode.jpg');
